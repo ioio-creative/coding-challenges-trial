@@ -1,12 +1,16 @@
-import Loadable from 'react-loadable';
+import React from 'react';
+import Dynamic from './Dynamic';
 import MyFirstLoadingComponent from './MyFirstLoadingComponent';
 
 
-function asyncLoadingComponent(funcToImportPage, loadingComponent) {
-  return Loadable({
-    loader: funcToImportPage,
-    loading: loadingComponent || MyFirstLoadingComponent
-  });
+function asyncLoadingComponent(loaderFunc, loadingComponent = MyFirstLoadingComponent) {
+  return (props) => (
+    <Dynamic
+      loaderFunc={loaderFunc}
+      loadingComponent={loadingComponent}
+      {...props}
+    />
+  );
 };
 
 

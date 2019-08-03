@@ -1,14 +1,20 @@
 import React from 'react';
 
+import { getTrialBySlug } from 'trials/trials';
+
 import './TrialDetailPage.css';
 
 
 function TrialDetailPage(props) {
-  const {} = props;
+  const { match } = props;
+  const trialSlug = match.params.trialSlug;
+  const trial = getTrialBySlug(trialSlug);
+  const AsyncTrialSketch = trial.AsyncComponent;
+
   return (
-    <div id="trial-detail-page">
-      trial detail page
-    </div>    
+    <div className="trial-detail-page">
+      <AsyncTrialSketch />
+    </div>
   );
 }
 

@@ -1,7 +1,10 @@
 const routes = {
   home: '/',
-  trials: './trials',
-  trialBySlug: './trials/:trialSlug'
+  trials: '/trials',
+  trialBySlug: '/trials/:trialSlug',
+  trialBySlugWithValue: function(slugValue) {
+    return `/trials/${slugValue}`;
+  }
 };
 
 

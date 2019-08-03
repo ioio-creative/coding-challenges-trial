@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import routes from 'globals/routes';
 
 import logo from 'logo.svg';
 import './HomePage.css';
 
 
 function HomePage(props) {
-  const {} = props;
   return (
     <div className="App">
       <header className="App-header">
@@ -21,8 +23,9 @@ function HomePage(props) {
         >
           Learn React
         </a>
+        <Link className="App-link" to={routes.trials}>Trials</Link>
       </header>
-    </div>    
+    </div>
   );
 }
 
