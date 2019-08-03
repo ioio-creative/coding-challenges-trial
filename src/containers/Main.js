@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import routes from 'globals/routes';
-import asyncLoadingComponent from 'components/loading/AsyncLoadingComponent';
+import asyncLoadingComponent from 'components/loading/asyncLoadingComponent';
 
 import './Main.css';
 

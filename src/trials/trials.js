@@ -1,4 +1,4 @@
-import asyncLoadingComponent from 'components/loading/AsyncLoadingComponent';
+import asyncLoadingComponent from 'components/loading/asyncLoadingComponent';
 
 
 const trials = [
