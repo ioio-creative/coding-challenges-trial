@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import routes from 'globals/routes';
 import trials from 'trials/trials';
 import isNonEmptyArray from 'utils/js/isNonEmptyArray';
+import { addS } from 'utils/string/plurals';
+import ATargetBlank from 'components/ATargetBlank';
 
 import './TrialListPage.css';
 
@@ -14,19 +16,17 @@ function TrialItem(props) {
     <div className="trial-item">
       <Link className="trial-slug" to={routes.trialBySlugWithValue(slug)}>{slug}</Link>
 
-      <div className="trial-ref-label">{`Reference${refs.length > 1 ? 's' : ''}:`}</div>
+      <div className="trial-ref-label">{addS('Reference', refs.length > 1)}</div>
       {
         isNonEmptyArray(refs) &&
         refs.map((ref) => {
           return (
             <div key={ref} className="trial-ref">
-              <a
+              <ATargetBlank
                 href={ref}
-                target="_blank"
-                rel="noopener noreferrer"
               >
                 {ref}
-              </a>
+              </ATargetBlank>
             </div>
           );
         })
