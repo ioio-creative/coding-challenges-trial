@@ -81,7 +81,7 @@ const lissajousCurveTable = (p5) => {
     });
   };
 
-  p5.draw = _ => {    
+  p5.draw = _ => {
     const newNumOfCyclesPassed = Math.floor(angularPhase / p5.TWO_PI);
 
     p5.background(backgroundColor);
@@ -102,11 +102,11 @@ const lissajousCurveTable = (p5) => {
     angularPhase += angularPhaseInc;
 
     if (newNumOfCyclesPassed !== numOfCyclesPassed) {
-      this.asjglkaj();
+      //this.asjglkaj();
       numOfCyclesPassed = newNumOfCyclesPassed;
       curves.forEach(curve => {
         curve.reset();
-      });      
+      });
     }
   }
 
