@@ -1,0 +1,7 @@
+1. Add a break point to where you wanna take the screen cap, using Developer Tools.
+2. Run the web app util the break point is hit.
+3. In Developer Tools, select the procesing canvas in the DOM in Elements tab.
+4. In Console tab, run 
+$0.toDataURL()
+5. Copy the base 64 encoded image string output.
+6. Paste the image string in the address bar of browser.
