@@ -18,8 +18,8 @@ const lissajousCurveTable = (p5) => {
   const backgroundColor = 0;
   const color = 255;
 
-  //const angularPhaseInc = 0.05 * p5.TWO_PI;
-  const angularPhaseInc = 0.005 * p5.TWO_PI;
+  const angularPhaseInc = 0.05 * p5.TWO_PI;
+  //const angularPhaseInc = 0.005 * p5.TWO_PI;
 
   const renderer = p5.P2D;
 

@@ -6,28 +6,30 @@ class Curve {
     this.refCircleForY = refCircleForY;
     this.pointSize = this.refCircleForX.pointSize;
 
-    this.currPoint = null;
-    this.path = [];    
+    this.path = [];
 
     this.reset();
   }
 
   addPoint() {
-    this.currPoint = this.p5.createVector(this.refCircleForX.absX, this.refCircleForY.absY);
-    this.path.push(this.currPoint);
+    const currPoint = this.p5.createVector(this.refCircleForX.absX, this.refCircleForY.absY);
+    this.path.push(currPoint);
+    return currPoint;
   }
 
-  reset() {
-    this.currPoint = null;
-    this.path = [];
-  }
-
-  draw() {
+  drawPoint(point) {
     const {
-      p5, color, pointSize, currPoint, path
+      p5, pointSize, color
     } = this;
+    p5.strokeWeight(pointSize);
+    p5.stroke(color);
+    p5.point(point.x, point.y);
+  }
 
-    this.addPoint();
+  drawCurve() {
+    const {
+      p5, color, path
+    } = this;
 
     p5.stroke(color);
     p5.strokeWeight(1);
@@ -38,12 +40,16 @@ class Curve {
       p5.vertex(point.x, point.y);
     }
     p5.endShape();
+  }
 
-    if (currPoint) {
-      p5.strokeWeight(pointSize);
-      p5.stroke(color);
-      p5.point(currPoint.x, currPoint.y);
-    }
+  reset() {
+    this.path = [];
+  }
+
+  draw() {
+    const currPoint = this.addPoint();
+    this.drawCurve();
+    this.drawPoint(currPoint);
   }
 }
 

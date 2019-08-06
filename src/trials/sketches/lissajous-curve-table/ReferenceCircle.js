@@ -17,24 +17,38 @@ class ReferenceCircle {
     this.absY = 0;
   }
 
-  draw(angularPhase) {
+  drawCircle() {
     const {
-      p5, cx, cy, radius, diameter, pointSize, angularVel, isHorizontalRef, color, cos, sin
+      p5, cx, cy, diameter, color
     } = this;
-
     p5.strokeWeight(1);
     p5.stroke(color);
     p5.ellipse(cx, cy, diameter, diameter);
+  }
 
+  calculateCurrPoint(angularPhase) {
+    const {
+      p5, cx, cy, radius, angularVel, cos, sin
+    } = this;
     const relX = radius * cos(angularVel * angularPhase - p5.PI);
     const relY = radius * sin(angularVel * angularPhase - p5.PI);
     this.absX = cx + relX;
     this.absY = cy + relY;
+  }
 
+  drawCurrPoint() {
+    const {
+      p5, pointSize, color, absX, absY
+    } = this;
     p5.strokeWeight(pointSize);
     p5.stroke(color);
-    p5.point(this.absX, this.absY);
+    p5.point(absX, absY);
+  }
 
+  drawReferenceLine() {
+    const {
+      p5, isHorizontalRef, color
+    } = this;
     p5.stroke(color, 150);
     p5.strokeWeight(1);
     if (isHorizontalRef) {
@@ -42,6 +56,13 @@ class ReferenceCircle {
     } else {
       p5.line(0, this.absY, p5.width, this.absY);
     }
+  }
+
+  draw(angularPhase) {
+    this.drawCircle();
+    this.calculateCurrPoint(angularPhase);
+    this.drawCurrPoint();
+    this.drawReferenceLine();
   }
 }
 
