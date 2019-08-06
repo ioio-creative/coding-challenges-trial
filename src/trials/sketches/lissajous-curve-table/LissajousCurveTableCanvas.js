@@ -10,17 +10,10 @@ import { memoedSin, memoedCos, getMemoedP5Sin, getMemoedP5Cos } from 'utils/memo
 // http://juanddd.com/code/integrate-p5js-with-reactjs-on-es6
 const lissajousCurveTable = (p5) => {
   // constants
-  const canvasWidth = p5.windowWidth;
-  const canvasHeight = p5.windowHeight;
-  const halfCanvasWidth = Math.floor(canvasWidth * 0.5);
-  const halfCanvasHeight = Math.floor(canvasHeight * 0.5);
-
   const itemWidth = 80;
   const halfItemWidth = Math.floor(itemWidth * 0.5);
   const itemDiameter = itemWidth - 10;
   const itemRadius = Math.floor(itemDiameter * 0.5);
-  const cols = Math.floor(canvasWidth / itemWidth) - 1;
-  const rows = Math.floor(canvasHeight / itemWidth) - 1;
 
   const backgroundColor = 0;
   const color = 255;
@@ -42,7 +35,15 @@ const lissajousCurveTable = (p5) => {
   }
 
   // variables
-  let canvas;
+  let canvasWidth;
+  let canvasHeight;
+  let halfCanvasWidth;
+  let halfCanvasHeight;
+
+  let cols;
+  let rows;
+
+  let canvas = null;
   let angularPhase = 0;
 
   let horizontalCircles;
@@ -52,10 +53,20 @@ const lissajousCurveTable = (p5) => {
 
   let numOfCyclesPassed = 0;
 
+  let handleWindowResize = _ => {
+    canvasWidth = window.innerWidth;//p5.windowWidth;
+    canvasHeight = window.innerHeight;//p5.windowHeight;
+    halfCanvasWidth = Math.floor(canvasWidth * 0.5);
+    halfCanvasHeight = Math.floor(canvasHeight * 0.5);
 
-  p5.setup = _ => {
-    canvas = p5.createCanvas(canvasWidth, canvasHeight, renderer);
-    p5.background(0);
+    cols = Math.floor(canvasWidth / itemWidth) - 1;
+    rows = Math.floor(canvasHeight / itemWidth) - 1;
+
+    if (canvas) {
+      p5.resizeCanvas(canvasWidth, canvasHeight);
+    } else {
+      canvas = p5.createCanvas(canvasWidth, canvasHeight, renderer);
+    }
 
     // https://stackoverflow.com/questions/3895478/does-javascript-have-a-method-like-range-to-generate-a-range-within-the-supp
     horizontalCircles = Array(cols).fill(null).map((_, i) => {
@@ -74,11 +85,18 @@ const lissajousCurveTable = (p5) => {
 
     allRefCircles = horizontalCircles.concat(verticalCircles);
 
+    curves = [];
     verticalCircles.forEach(verticalCircle => {
       horizontalCircles.forEach(horizontalCircle => {
         curves.push(new Curve(p5, color, horizontalCircle, verticalCircle));
       });
     });
+  };
+
+
+  p5.setup = _ => {
+    handleWindowResize();
+    p5.background(0);
   };
 
   p5.draw = _ => {
@@ -108,6 +126,10 @@ const lissajousCurveTable = (p5) => {
         curve.reset();
       });
     }
+  }
+
+  p5.windowResized = _ => {
+    handleWindowResize();
   }
 
   // test function, accesible from outside
