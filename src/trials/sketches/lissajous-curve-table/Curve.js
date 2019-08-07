@@ -37,7 +37,8 @@ class Curve {
 
     p5.beginShape();
     for (let point of path) {
-      p5.vertex(point.x, point.y);
+      //p5.vertex(point.x, point.y);
+      p5.curveVertex(point.x, point.y);
     }
     p5.endShape();
   }

@@ -93,7 +93,6 @@ const lissajousCurveTable = (p5) => {
     });
   };
 
-
   p5.setup = _ => {
     handleWindowResize();
     p5.background(0);

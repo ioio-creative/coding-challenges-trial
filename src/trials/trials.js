@@ -1,6 +1,3 @@
-import asyncLoadingComponent from 'components/loading/asyncLoadingComponent';
-
-
 const trials = [
   {
     id: 1,
@@ -12,7 +9,7 @@ const trials = [
       'https://thecodingtrain.com/CodingChallenges/116-lissajous.html',
       'https://youtu.be/--6eyLO78CY'
     ],
-    AsyncComponent: asyncLoadingComponent(_ => import('trials/sketches/lissajous-curve-table/LissajousCurveTableCanvas'))
+    loadComponentFunc: _ => import('trials/sketches/lissajous-curve-table/LissajousCurveTableCanvas'),
   },
   {
     id: 2,
@@ -24,7 +21,7 @@ const trials = [
       'https://thecodingtrain.com/CodingChallenges/093-double-pendulum.html',
       'https://youtu.be/uWzPe_S-RVE'
     ],
-    AsyncComponent: asyncLoadingComponent(_ => import('trials/sketches/double-pendulum/DoublePendulumCanvas'))
+    loadComponentFunc: _ => import('trials/sketches/double-pendulum/DoublePendulumCanvas'),
   }
 ];
 
