@@ -32,6 +32,18 @@ const lissajousCurveTable = (p5) => {
     cos = isUseP5Trigo ? p5.cos.bind(p5) : Math.cos;
   }
 
+  let frameRateSlider;
+  const frameRateSliderMin = 1;
+  const frameRateSliderMax = 60;
+  const frameRateSliderStart = p5.map(1, 0, 1, frameRateSliderMin, frameRateSliderMax);
+
+  let angularPhaseIncSlider;
+  const angularPhaseIncSliderMin = 1;
+  const angularPhaseIncSliderMax = 400;
+  const angularPhaseIncSliderStart = p5.map(0.5, 0, 1, angularPhaseIncSliderMin, angularPhaseIncSliderMax);
+
+  let sliders;
+
   // variables
   let canvasWidth;
   let canvasHeight;
@@ -53,7 +65,11 @@ const lissajousCurveTable = (p5) => {
 
   //let angularPhaseInc = 0.05 * p5.TWO_PI;
   let angularPhaseInc = 0.005 * p5.TWO_PI;
-  let angularPhaseIncSlider;
+
+  const setFrameRate = _ => {
+    const frameRateSliderValue = frameRateSlider.value();
+    p5.frameRate(frameRateSliderValue);
+  };
 
   const setAngularPhaseInc = _ => {
     const angularPhaseIncSliderValue = angularPhaseIncSlider.value();
@@ -99,16 +115,21 @@ const lissajousCurveTable = (p5) => {
       });
     });
     
-    angularPhaseIncSlider.position(0.85 * canvasWidth, 0.05 * canvasHeight);
+    sliders.forEach((slider, idx) => {
+      slider.position(0.01 * canvasWidth, (0.01 + idx * 0.05) * canvasHeight);
+    });    
   };
 
   p5.setup = _ => {
     p5.background(0);
-    angularPhaseIncSlider = p5.createSlider(1, 5000, 500);
+    frameRateSlider = p5.createSlider(frameRateSliderMin, frameRateSliderMax, frameRateSliderStart);
+    angularPhaseIncSlider = p5.createSlider(angularPhaseIncSliderMin, angularPhaseIncSliderMax, angularPhaseIncSliderStart);
+    sliders = [frameRateSlider, angularPhaseIncSlider];
     handleWindowResize();    
   };
 
   p5.draw = _ => {
+    setFrameRate();
     setAngularPhaseInc();
     const newNumOfCyclesPassed = Math.floor(angularPhase / p5.TWO_PI);
 
