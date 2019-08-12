@@ -1,6 +1,7 @@
 import React from 'react';
-import P5Wrapper from 'components/p5/P5Wrapper';
+import 'p5/lib/addons/p5.dom';  // https://github.com/processing/p5.js-sound/issues/137
 
+import P5Wrapper from 'components/p5/P5Wrapper';
 import ReferenceCircle from './ReferenceCircle';
 import Curve from './Curve';
 
@@ -16,10 +17,7 @@ const lissajousCurveTable = (p5) => {
   const itemRadius = Math.floor(itemDiameter * 0.5);
 
   const backgroundColor = 0;
-  const color = 255;
-
-  const angularPhaseInc = 0.05 * p5.TWO_PI;
-  //const angularPhaseInc = 0.005 * p5.TWO_PI;
+  const color = 255;  
 
   const renderer = p5.P2D;
 
@@ -53,7 +51,16 @@ const lissajousCurveTable = (p5) => {
 
   let numOfCyclesPassed = 0;
 
-  let handleWindowResize = _ => {
+  //let angularPhaseInc = 0.05 * p5.TWO_PI;
+  let angularPhaseInc = 0.005 * p5.TWO_PI;
+  let angularPhaseIncSlider;
+
+  const setAngularPhaseInc = _ => {
+    const angularPhaseIncSliderValue = angularPhaseIncSlider.value();
+    angularPhaseInc = p5.TWO_PI * (1 / angularPhaseIncSliderValue);
+  };
+
+  const handleWindowResize = _ => {
     canvasWidth = window.innerWidth;//p5.windowWidth;
     canvasHeight = window.innerHeight;//p5.windowHeight;
     halfCanvasWidth = Math.floor(canvasWidth * 0.5);
@@ -91,14 +98,18 @@ const lissajousCurveTable = (p5) => {
         curves.push(new Curve(p5, color, horizontalCircle, verticalCircle));
       });
     });
+    
+    angularPhaseIncSlider.position(0.85 * canvasWidth, 0.05 * canvasHeight);
   };
 
   p5.setup = _ => {
-    handleWindowResize();
     p5.background(0);
+    angularPhaseIncSlider = p5.createSlider(1, 5000, 500);
+    handleWindowResize();    
   };
 
   p5.draw = _ => {
+    setAngularPhaseInc();
     const newNumOfCyclesPassed = Math.floor(angularPhase / p5.TWO_PI);
 
     p5.background(backgroundColor);
@@ -140,7 +151,13 @@ const lissajousCurveTable = (p5) => {
 };
 
 function LissajousCurveTableCanvas(props) {
-  return <P5Wrapper sketch={lissajousCurveTable} />
+  const { parentSelectFunc } = props;
+  return (
+    <P5Wrapper 
+      sketch={lissajousCurveTable}
+      parentSelectFunc={parentSelectFunc}
+    />
+  );
 }
 
 

@@ -8,13 +8,20 @@ import './TrialDetailPage.css';
 
 function TrialDetailPage(props) {
   const { match } = props;
+
+  const containerClassName = 'trial-detail-page';
+
   const trialSlug = match.params.trialSlug;
   const trial = getTrialBySlug(trialSlug);
   const AsyncTrialSketch = asyncLoadingComponent(trial.loadComponentFunc);
 
+  const sketchParentSelectFunc = _ => document.querySelector(`.${containerClassName}`);
+
   return (
-    <div className="trial-detail-page">
-      <AsyncTrialSketch />
+    <div className={containerClassName}>
+      <AsyncTrialSketch
+        parentSelectFunc={sketchParentSelectFunc}
+      />
     </div>
   );
 }

@@ -6,10 +6,10 @@ import { invokeIfIsFunction } from 'utils/js/isFunction';
 
 // http://juanddd.com/code/integrate-p5js-with-reactjs-on-es6
 function P5Wrapper(props) {
-  const { sketch } = props;
+  const { sketch, parentSelectFunc } = props;
 
   useEffect(_ => {
-    const mySketch = new p5(sketch);
+    const mySketch = new p5(sketch, invokeIfIsFunction(parentSelectFunc));
     invokeIfIsFunction(mySketch.test);
   }, [sketch]);
 
