@@ -32,7 +32,7 @@ function Dynamic(props) {
         setComponentParams({
           error: {
             code: error.code,
-            message: message
+            message: error.message
           }
         });
       });
