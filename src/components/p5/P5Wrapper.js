@@ -11,7 +11,7 @@ function P5Wrapper(props) {
   useEffect(_ => {
     const mySketch = new p5(sketch, invokeIfIsFunction(parentSelectFunc));
     invokeIfIsFunction(mySketch.test);
-  }, [sketch]);
+  }, [sketch, parentSelectFunc]);
 
   return <React.Fragment />;
 }

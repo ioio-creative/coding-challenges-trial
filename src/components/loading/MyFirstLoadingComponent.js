@@ -9,7 +9,8 @@ function MyFirstLoadingComponent(props) {
   }
   // Handle the error state
   else if (error) {
-    console.error(error);
+    console.error(`Error code: ${error.code}`);
+    console.error(`Error message: ${error.message}`);
     return <div>Sorry, there was a problem loading the page.</div>;
   }
   else {
