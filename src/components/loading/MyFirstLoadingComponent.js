@@ -1,17 +1,23 @@
 import React from 'react';
 
 
+// https://github.com/jamiebuilds/react-loadable
 function MyFirstLoadingComponent(props) {
-  const { isLoading, error } = props;
-  // Handle the loading state
-  if (isLoading) {
-    return <div id="loading-screen">Now Loading ...</div>;
-  }
-  // Handle the error state
-  else if (error) {
-    console.error(`Error code: ${error.code}`);
-    console.error(`Error message: ${error.message}`);
-    return <div>Sorry, there was a problem loading the page.</div>;
+  const { error, timeout, pastDelay } = props;
+  if (error) {
+    console.error('Loading error:');
+    console.error(error);
+    return (
+      <div>Sorry, there was a problem loading the page.</div>
+    );
+  } else if (timeout) {
+    return (
+      <div>Loading timeout</div>
+    );
+  } else if (pastDelay) {
+    return (
+      <div class="loading-screen">Now Loading ...</div>
+    );
   }
   else {
     return null;

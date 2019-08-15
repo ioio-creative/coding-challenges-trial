@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+
 import MyFirstLoadingComponent from './MyFirstLoadingComponent';
+import isFunction from 'utils/js/isFunction';
 
 
 // https://medium.com/@magbicaleman/intro-to-dynamic-import-in-create-react-app-6305bb397c46
 function Dynamic(props) {
-  const { loaderPromiseFunc, loadingComponent, timeoutTimeInMs = 5000, ...rest } = props;
+  const { loader, loading, delay, timeout, render, ...rest } = props;
   // https://github.com/facebook/react/issues/15209
-  const [MyModule, setMyModule] = useState(_ => loadingComponent);
-  const [componentParams, setComponentParams] = useState({ isLoading: true });
+  const [loaded, setLoaded] = useState(null);
+  const [isTimeout, setIsTimeout] = useState(false);
+  const [isPastDelay, setIsPastDelay] = useState(false);
+  const [error, setError] = useState(null);
 
   const timeOutPromise = useCallback((_, reject) => {
     setTimeout(_ => {
@@ -16,42 +20,70 @@ function Dynamic(props) {
         code: 'TIMEOUT',
         message: 'Timeout when loading module'
       });
-    }, timeoutTimeInMs)
-  }, [timeoutTimeInMs]);
+    }, timeout)
+  }, [timeout]);
 
   useEffect(_ => {
     Promise.race([
-      loaderPromiseFunc(),
+      loader(),
       new Promise(timeOutPromise)
     ])
-    // loaderPromiseFunc()
-      .then((aModule) => {
-        setComponentParams(rest);
-        setMyModule(_ => aModule.default);
-      }, (error) => {
-        setComponentParams({
-          error: {
-            code: error.code,
-            message: error.message
-          }
-        });
+    // loader()
+      .then((loaded) => {
+        setLoaded(loaded);
+      })
+      .catch((err) => {
+        if (err.code === 'TIMEOUT') {
+          setIsTimeout(true);
+        } else {
+          setError(err);
+        }
       });
-  }, [loaderPromiseFunc, timeOutPromise]);
+  }, [loader, timeOutPromise]);
+
+  const Loading = loading;
+  let LoadedComponent = null;
+  if (loaded) {
+    if (isFunction(render)) {
+      LoadedComponent = (props) => render(loaded, props);
+    } else {
+      LoadedComponent = loaded.default;
+    }
+  }
+
+  const isShowLoading = error || isTimeout || isPastDelay;
 
   return (
     <>
-      {MyModule && <MyModule {...componentParams} />}
+      {
+        isShowLoading ?
+          <Loading
+            error={error}
+            timeout={isTimeout}
+            pastDelay={isPastDelay}
+          />
+          :
+          (LoadedComponent && <LoadedComponent { ...rest } />)
+      }
     </>
   );
 }
 
 
-function asyncLoadingComponent(loaderPromiseFunc, loadingComponent = MyFirstLoadingComponent, timeoutTimeInMs = 5000) {
+// https://github.com/jamiebuilds/react-loadable
+// loader is a function that return a Promise, e.g. dynamic import(), fetch(), etc.
+// loading is a Component
+// delay in millis
+// timeout in millis
+// render is a function that accepts (loaded, props) and returns a React element. loaded is what returned from loader
+function asyncLoadingComponent(loader, loading = MyFirstLoadingComponent, delay = 200, timeout = 5000, render = null) {
   return (props) => (
     <Dynamic
-      loaderPromiseFunc={loaderPromiseFunc}
-      loadingComponent={loadingComponent}
-      timeoutTimeInMs = {timeoutTimeInMs}
+      loader={loader}
+      loading={loading}
+      delay = {delay}
+      timeout = {timeout}
+      render = {render}
       {...props}
     />
   );
