@@ -24,7 +24,7 @@ function Dynamic(props) {
     }, timeout)
   }, [timeout]);
 
-  // race between loader and timeoutPromise
+  // for timeout functionality: race between loader and timeoutPromise
   useEffect(_ => {
     Promise.race([
       // // for testing
@@ -48,7 +48,7 @@ function Dynamic(props) {
       });
   }, [loader, timeoutPromise]);
 
-  // setIsPastDelay
+  // for delay functionality: setIsPastDelay
   useEffect(_ => {
     setTimeout(_ => {
       console.log('Dynamic: delay passed');
