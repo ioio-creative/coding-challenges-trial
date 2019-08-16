@@ -13,20 +13,21 @@ function Dynamic(props) {
   const [isPastDelay, setIsPastDelay] = useState(false);
   const [error, setError] = useState(null);
 
-  const timeOutPromise = useCallback((_, reject) => {
+  const timeoutPromise = useCallback((_, reject) => {
     setTimeout(_ => {
-      console.log('delay resolve trigger!!!');
+      console.log('Dynamic: delay resolve trigger!!!');
       reject({
         code: 'TIMEOUT',
-        message: 'Timeout when loading module'
+        message: 'Dynamic: Timeout when loading module'
       });
     }, timeout)
   }, [timeout]);
 
+  // race between loader and timeoutPromise
   useEffect(_ => {
     Promise.race([
       loader(),
-      new Promise(timeOutPromise)
+      new Promise(timeoutPromise)
     ])
     // loader()
       .then((loaded) => {
@@ -39,7 +40,15 @@ function Dynamic(props) {
           setError(err);
         }
       });
-  }, [loader, timeOutPromise]);
+  }, [loader, timeoutPromise]);
+
+  // setIsPastDelay
+  useEffect(_ => {
+    setTimeout(_ => {
+      console.log('Dynamic: delay passed');
+      setIsPastDelay(true);
+    }, delay);
+  }, [delay]);
 
   const Loading = loading;
   let LoadedComponent = null;
@@ -51,7 +60,7 @@ function Dynamic(props) {
     }
   }
 
-  const isShowLoading = error || isTimeout || isPastDelay;
+  const isShowLoading = error || isTimeout || (isPastDelay && !LoadedComponent);
 
   return (
     <>
