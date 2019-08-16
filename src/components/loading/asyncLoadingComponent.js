@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 
 import MyFirstLoadingComponent from './MyFirstLoadingComponent';
 import isFunction from 'utils/js/isFunction';
+//import sleep from 'utils/sleep';
 
 
 // https://medium.com/@magbicaleman/intro-to-dynamic-import-in-create-react-app-6305bb397c46
@@ -26,6 +27,11 @@ function Dynamic(props) {
   // race between loader and timeoutPromise
   useEffect(_ => {
     Promise.race([
+      // // for testing
+      // (async _ => {
+      //   await sleep(timeout - 1000);
+      //   return await loader();
+      // })(),
       loader(),
       new Promise(timeoutPromise)
     ])
@@ -51,6 +57,7 @@ function Dynamic(props) {
   }, [delay]);
 
   const Loading = loading;
+
   let LoadedComponent = null;
   if (loaded) {
     if (isFunction(render)) {
@@ -60,19 +67,19 @@ function Dynamic(props) {
     }
   }
 
-  const isShowLoading = error || isTimeout || (isPastDelay && !LoadedComponent);
+  const isShowLoading = !Boolean(LoadedComponent);
 
   return (
     <>
       {
         isShowLoading ?
-          <Loading
-            error={error}
-            timeout={isTimeout}
-            pastDelay={isPastDelay}
-          />
-          :
-          (LoadedComponent && <LoadedComponent { ...rest } />)
+        <Loading
+          error={error}
+          timeout={isTimeout}
+          pastDelay={isPastDelay}
+        />
+        :
+        <LoadedComponent { ...rest } />
       }
     </>
   );
@@ -90,7 +97,7 @@ function asyncLoadingComponent(loader, loading = MyFirstLoadingComponent, delay 
     <Dynamic
       loader={loader}
       loading={loading}
-      delay = {delay}
+      delay = {delay/*timeout - 3000*/}
       timeout = {timeout}
       render = {render}
       {...props}
