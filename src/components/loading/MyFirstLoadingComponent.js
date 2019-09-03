@@ -16,7 +16,7 @@ function MyFirstLoadingComponent(props) {
     );
   } else if (pastDelay) {
     return (
-      <div class="loading-screen">Now Loading ...</div>
+      <div className="loading-screen">Now Loading ...</div>
     );
   }
   else {
