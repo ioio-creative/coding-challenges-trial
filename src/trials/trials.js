@@ -22,6 +22,19 @@ const trials = [
       'https://youtu.be/uWzPe_S-RVE'
     ],
     loadComponentFunc: _ => import('trials/sketches/double-pendulum/DoublePendulumCanvas'),
+  },
+  {
+    id: 3,
+    slug: 'Flocking',
+    authors: ['ioio-tech-team'],
+    techs: ['p5'],
+    hashTags: ['p5', 'flocking', 'boids'],
+    refs: [
+      'https://www.youtube.com/watch?v=mhjuuHl6qHM',
+      'https://www.red3d.com/cwr/boids/',
+      'https://p5js.org/examples/simulate-flocking.html'
+    ],
+    loadComponentFunc: _ => import('trials/sketches/flocking/index'),
   }
 ];
 

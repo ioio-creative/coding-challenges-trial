@@ -26,6 +26,8 @@ function Dynamic(props) {
 
   // for timeout functionality: race between loader and timeoutPromise
   useEffect(_ => {
+    // use a variable to store whether the loading component is still mounting or not
+    let isSubscribed = true;
     Promise.race([
       // // for testing
       // (async _ => {
@@ -37,15 +39,20 @@ function Dynamic(props) {
     ])
     // loader()
       .then((loaded) => {
-        setLoaded(loaded);
+        if (isSubscribed) {
+          setLoaded(loaded);
+        }
       })
       .catch((err) => {
-        if (err.code === 'TIMEOUT') {
-          setIsTimeout(true);
-        } else {
-          setError(err);
+        if (isSubscribed) {
+          if (err.code === 'TIMEOUT') {
+            setIsTimeout(true);
+          } else {
+            setError(err);
+          }
         }
       });
+    return () => isSubscribed = false;
   }, [loader, timeoutPromise]);
 
   // for delay functionality: setIsPastDelay
