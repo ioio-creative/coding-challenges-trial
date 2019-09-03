@@ -17,7 +17,7 @@ const lissajousCurveTable = (p5) => {
   const itemRadius = Math.floor(itemDiameter * 0.5);
 
   const backgroundColor = 0;
-  const color = 255;  
+  const color = 255;
 
   const renderer = p5.P2D;
 
@@ -114,10 +114,10 @@ const lissajousCurveTable = (p5) => {
         curves.push(new Curve(p5, color, horizontalCircle, verticalCircle));
       });
     });
-    
+
     sliders.forEach((slider, idx) => {
       slider.position(0.01 * canvasWidth, (0.01 + idx * 0.05) * canvasHeight);
-    });    
+    });
   };
 
   p5.setup = _ => {
@@ -125,7 +125,7 @@ const lissajousCurveTable = (p5) => {
     frameRateSlider = p5.createSlider(frameRateSliderMin, frameRateSliderMax, frameRateSliderStart);
     angularPhaseIncSlider = p5.createSlider(angularPhaseIncSliderMin, angularPhaseIncSliderMax, angularPhaseIncSliderStart);
     sliders = [frameRateSlider, angularPhaseIncSlider];
-    handleWindowResize();    
+    handleWindowResize();
   };
 
   p5.draw = _ => {
@@ -174,7 +174,7 @@ const lissajousCurveTable = (p5) => {
 function LissajousCurveTableCanvas(props) {
   const { parentSelectFunc } = props;
   return (
-    <P5Wrapper 
+    <P5Wrapper
       sketch={lissajousCurveTable}
       parentSelectFunc={parentSelectFunc}
     />

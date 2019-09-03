@@ -10,7 +10,7 @@ class ReferenceCircle {
     this.isHorizontalRef = isHorizontalRef;
     this.color = color;
     this.cos = cos || p5.cos;
-    this.sin = sin || p5.sin;    
+    this.sin = sin || p5.sin;
 
     // public variables
     this.absX = 0;
