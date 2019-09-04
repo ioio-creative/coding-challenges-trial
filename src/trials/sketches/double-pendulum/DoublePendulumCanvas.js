@@ -19,7 +19,7 @@ const doublePendulum = (p5) => {
   p5.test = _ => {
     console.log('testing -->');
     console.log(`sketch: ${p5.width}, ${p5.height}`);
-    console.log(`canvas: ${canvas.width}, ${canvas.height}`);
+    //console.log(`canvas: ${canvas.width}, ${canvas.height}`);
   }
 };
 

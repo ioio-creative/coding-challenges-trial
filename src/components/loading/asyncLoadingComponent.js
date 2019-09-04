@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import MyFirstLoadingComponent from './MyFirstLoadingComponent';
 import isFunction from 'utils/js/isFunction';
@@ -14,8 +14,9 @@ function Dynamic(props) {
   const [isPastDelay, setIsPastDelay] = useState(false);
   const [error, setError] = useState(null);
 
+  const timeoutHandle = useRef(null);
   const timeoutPromise = useCallback((_, reject) => {
-    setTimeout(_ => {
+    timeoutHandle.current = setTimeout(_ => {
       console.log('Dynamic: delay resolve trigger!!!');
       reject({
         code: 'TIMEOUT',
@@ -52,15 +53,27 @@ function Dynamic(props) {
           }
         }
       });
-    return () => isSubscribed = false;
+    return _ => {
+      isSubscribed = false;
+      if (timeoutHandle.current) {
+        clearTimeout(timeoutHandle.current);
+        timeoutHandle.current = null;
+      }
+    };
   }, [loader, timeoutPromise]);
 
   // for delay functionality: setIsPastDelay
+  const delayTimeoutHandle = useRef(null);
   useEffect(_ => {
-    setTimeout(_ => {
+    delayTimeoutHandle.current = setTimeout(_ => {
       console.log('Dynamic: delay passed');
       setIsPastDelay(true);
     }, delay);
+    return _ => {
+      if (delayTimeoutHandle.current) {
+        clearTimeout(delayTimeoutHandle.current);
+      }
+    }
   }, [delay]);
 
   const Loading = loading;
