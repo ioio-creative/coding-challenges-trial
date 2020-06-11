@@ -9,7 +9,8 @@ const trials = [
       'https://thecodingtrain.com/CodingChallenges/116-lissajous.html',
       'https://youtu.be/--6eyLO78CY'
     ],
-    loadComponentFunc: _ => import('trials/sketches/lissajous-curve-table/LissajousCurveTableCanvas'),
+    loadComponentFunc: _ =>
+      import('trials/sketches/lissajous-curve-table/LissajousCurveTableCanvas')
   },
   {
     id: 2,
@@ -21,11 +22,12 @@ const trials = [
       'https://thecodingtrain.com/CodingChallenges/093-double-pendulum.html',
       'https://youtu.be/uWzPe_S-RVE'
     ],
-    loadComponentFunc: _ => import('trials/sketches/double-pendulum/DoublePendulumCanvas'),
+    loadComponentFunc: _ =>
+      import('trials/sketches/double-pendulum/DoublePendulumCanvas')
   },
   {
     id: 3,
-    slug: 'Flocking',
+    slug: 'flocking',
     authors: ['ioio-tech-team'],
     techs: ['p5'],
     hashTags: ['p5', 'flocking', 'boids'],
@@ -34,22 +36,29 @@ const trials = [
       'https://www.red3d.com/cwr/boids/',
       'https://p5js.org/examples/simulate-flocking.html'
     ],
-    loadComponentFunc: _ => import('trials/sketches/flocking/index'),
+    loadComponentFunc: _ => import('trials/sketches/flocking/index')
+  },
+  {
+    id: 4,
+    slug: 'pick-from-basket-without-replacement',
+    authors: ['ioio-tech-team'],
+    techs: ['vanilla-js'],
+    hashTags: ['random_number'],
+    refs: [],
+    loadComponentFunc: _ =>
+      import('trials/sketches/pick-from-basket-without-replacement/index')
   }
 ];
 
 let trialSlugToTrialMap = {};
-trials.forEach((trial) => {
-  trialSlugToTrialMap[trial.slug] = trial
+trials.forEach(trial => {
+  trialSlugToTrialMap[trial.slug] = trial;
 });
 
-const getTrialBySlug = (slug) => {
+const getTrialBySlug = slug => {
   return trialSlugToTrialMap[slug];
-}
-
+};
 
 export default trials;
 
-export {
-  getTrialBySlug
-};
+export { getTrialBySlug };
